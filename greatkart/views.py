@@ -11,7 +11,7 @@ def home(request):
 
 def get_variations(request):
     product_id = request.GET.get('product_id')
-    cart_item_id = request.GET.get('cart_item_id') or None
+    cart_item_id = int(request.GET.get('cart_item_id')) or None
     if cart_item_id:
         cart_item = CartItem.objects.get(id=cart_item_id)
         variations = Variation.objects.filter(product_id=product_id)

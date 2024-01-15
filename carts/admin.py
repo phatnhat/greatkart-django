@@ -16,6 +16,17 @@ class CartItemAdmin(admin.ModelAdmin):
     class Media:
         js = ('js/admin/cart_item_admin.js',)
 
+    # def formfield_for_manytomany(self, db_field, request, **kwargs):
+    #     if db_field.name == "variations":
+    #         try:
+    #             object_id = request.resolver_match.kwargs['object_id']
+    #             cart_item = CartItem.objects.get(pk=object_id)
+    #             product = cart_item.product
+    #             kwargs["queryset"] = Variation.objects.filter(product=product)
+    #         except CartItem.DoesNotExist:
+    #             kwargs["queryset"] = Variation.objects.none()
+    #     return super().formfield_for_manytomany(db_field, request, **kwargs)
+    
     formfield_overrides = {
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     }

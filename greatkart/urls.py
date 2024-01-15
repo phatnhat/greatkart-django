@@ -26,5 +26,6 @@ urlpatterns = [
     path('', views.home, name="home"),
     path('store/', include('store.urls')),
     path('cart/', include('carts.urls')),
+    path('accounts/', include('accounts.urls')),
     path('get-variations/', views.get_variations, name='get_variations'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
