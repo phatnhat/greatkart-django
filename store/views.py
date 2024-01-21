@@ -23,7 +23,7 @@ def store(request, category_slug=None):
         products = Product.objects.all().filter(is_available=True).order_by('-modified_date')
     product_count = products.count()
     
-    paginator = Paginator(products, 1)
+    paginator = Paginator(products, 6)
     page_number = request.GET.get("page", 1)
     try:
         paged_products = paginator.page(page_number)

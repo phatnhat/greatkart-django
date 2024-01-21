@@ -2,10 +2,10 @@ window.addEventListener("load", function() {
     (function($) {
         $(document).ready(function() {
             let currentPathname  = window.location.pathname;
-            if(currentPathname.indexOf('/add/') !== -1){
+            if(currentPathname.indexOf('/change/') !== -1){
                 var productField = $('#id_product');
                 var variationsField = $('#id_variations');
-                var currentId = window.location.pathname.split('/').slice(-3, -1)[0] | -1;
+                var currentId = window.location.pathname.split('/').slice(-3, -1)[0];
 
                 function updateVariations() {
                     var productId = productField.val();
