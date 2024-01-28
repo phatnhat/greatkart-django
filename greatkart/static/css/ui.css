@@ -1412,4 +1412,9 @@ a[class*=card]:hover .title {
   display: block;
 }
 
+
+@media print {
+  @page { margin: 0; }
+  header, .container:nth-child(2) { display: none; }
+}
 /*# sourceMappingURL=ui.css.map */

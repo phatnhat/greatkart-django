@@ -6,6 +6,7 @@ from carts.models import CartItem
 def home(request):
     products = Product.objects.all().filter(is_available=True)
     context = {'products': products}
+    
     return render(request, 'home.html', context)
 
 
@@ -20,5 +21,5 @@ def get_variations(request):
     else:
         variations = Variation.objects.filter(product_id=product_id)
         variation_choices = [dict(id=v.id, value=str(v), checked=False) for v in variations]
-
+    
     return JsonResponse(variation_choices, safe=False)

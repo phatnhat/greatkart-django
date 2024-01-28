@@ -26,8 +26,9 @@ SECRET_KEY = 'django-insecure-cn)dohregdo87k5xcvlhjyyp3vv@+x!(3(a4k=(&6*778xea*i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app']
 
 # Application definition
 
@@ -44,6 +45,9 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'carts',
+    'orders',
+
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -154,4 +158,11 @@ MESSAGE_TAGS = {
     messages.ERROR: "danger",
 }
 
+# turn off logging
 logging.disable(logging.CRITICAL)
+
+
+# Paypal configuration
+PAYPAL_RECEIVER_EMAIL = 'sb-rfqz429401621@business.example.com'
+PAYPAL_TEST = True
+SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'

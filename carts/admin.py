@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from .models import Cart, CartItem
 from django.db import models
@@ -12,26 +13,31 @@ class CartAdmin(admin.ModelAdmin):
     list_display = ('cart_id', 'date_added')
 
 
-class CartItemAdmin(admin.ModelAdmin):
-    class Media:
-        js = ('js/admin/cart_item_admin.js',)
+class CartItemAdminForm(forms.ModelForm):
+    variations = forms.ModelMultipleChoiceField(
+        queryset=Variation.objects.none(),  # Set an initial empty queryset
+        widget=admin.widgets.FilteredSelectMultiple('Variations', False),
+    )
 
-    # def formfield_for_manytomany(self, db_field, request, **kwargs):
-    #     if db_field.name == "variations":
-    #         try:
-    #             object_id = request.resolver_match.kwargs['object_id']
-    #             cart_item = CartItem.objects.get(pk=object_id)
-    #             product = cart_item.product
-    #             kwargs["queryset"] = Variation.objects.filter(product=product)
-    #         except CartItem.DoesNotExist:
-    #             kwargs["queryset"] = Variation.objects.none()
-    #     return super().formfield_for_manytomany(db_field, request, **kwargs)
-    
-    formfield_overrides = {
-        models.ManyToManyField: {'widget': CheckboxSelectMultiple},
-    }
-    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        product_id = self.initial.get('product')
+        if product_id:
+            self.fields['variations'].queryset = Variation.objects.filter(product_id=product_id, is_active=True)
+
+    class Meta:
+        model = Cart
+        fields = '__all__'
+
+
+class CartItemAdmin(admin.ModelAdmin):
+    form = CartItemAdminForm
     list_display = ('id', 'product', 'cart', 'quantity')
+    # readonly_fields = ('get_variations',)
+    # fields = ('user', 'product', 'get_variations')
+
+    def get_variations(self, obj):
+        return obj.variations.all()
 
 admin.site.register(Cart, CartAdmin)
 admin.site.register(CartItem, CartItemAdmin)
